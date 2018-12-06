@@ -1,0 +1,37 @@
+<form [formGroup]="myFirm">
+  <div id="wrapper"  [ngClass]="{'toggled': toggled===true}">
+    <div id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+        <li>
+          <a class="menu-toggle" id="menu-toggle">
+            <i class="fa fa-navicon fa-lg"></i><span class="desc">Firms</span>
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a [routerLink]="['./', {outlets: {'surveyroute': ['NewSurvey']}}]">
+            <i class="fa fa-plus"></i><span class="desc">&nbsp;ADD NEW FIRM</span>
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a>
+            <i class="fa fa-search"></i>
+              <span class="desc">
+                <input formControlName="firmName" type="text" class="form-control input-sm" placeholder="search..."/>
+              </span>
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li *ngFor="let firmlist of firmlist"  [routerLink]="['./', {outlets: {'surveyroute': ['NewSurvey',firmlist.firmID]}}]"><a><i class="fa fa-university"></i><span class="desc">{{firmlist.firmName}}</span></a></li>
+      </ul>
+    </div>
+    <div id="page-content-wrapper">
+      <div class="container-fluid">
+        <div class="row">
+            <router-outlet name="surveyroute"></router-outlet>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

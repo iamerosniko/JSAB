@@ -1,0 +1,47 @@
+<div class="row col-md-12">
+    <div class="row col-md-12" *ngIf="diversityGraphTrigger">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="display: block;">
+            <canvas id="reportCanvas" baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartTypeRate"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)" ></canvas>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row col-md-12">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <table class="table table-inverse table-bordered table-hover table-striped input-sm" id="pdf_table">
+              <tr id="tableName" (click)="diversityGraph()">
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 0">All</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 1">Equity Partners</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 2">Non-Equity Partners</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 3">Aassociates</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 4">Counsel</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 5">otherLawyers</th>
+              </tr>
+              <tr id="tableHead">
+                  <th  align="center" style="max-width: 100px; min-width: 100px;">Rank</th>
+                  <th  align="left" style="max-width: 100px; min-width: 100px;">Firm Name</th>
+                  <th  align="right" style="max-width: 100px; min-width: 100px;">Rate</th>
+              </tr>
+              <tr *ngFor="let diversityRankData of diversityRankData; let i=index;">
+                  <th align="center">{{i+1}}</th>
+                  <th align="center">{{diversityRankData.firmName}}</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 0">{{diversityRankData.total}}</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 1">{{diversityRankData.equityPartners}}</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 2">{{diversityRankData.nonEquityPartners}}</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 3">{{diversityRankData.associates}}</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 4">{{diversityRankData.counsel}}</th>
+                  <th align="center" *ngIf="selectedDiversityRankPositionIndex == 5">{{diversityRankData.otherLawyers}}</th>
+              </tr>
+          </table>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>

@@ -1,0 +1,168 @@
+<div class="row col-md-12">
+    <div class="col-md-8">
+        <div class="col-md-2">
+            <label>Year: </label>
+        </div>
+        <div class="col-md-6">
+            <select class="form-control" [(ngModel)]="selectedYearCompanyProfileID" (change)="updateCompanyProfileID()" id="dateBox" type="text" maxlength="100" >
+                <option value="0">Add New Survey Year</option>
+                <option *ngFor="let c of years" [value]="c.companyProfileID" >{{c.year}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4 ">   
+        <button type="button" *ngIf="selectedYearCompanyProfileID=='0'" [disabled]="checkValid()" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#modal_confirm">
+            <i class="fa fa-save"></i> Submit
+        </button>
+    </div>
+</div>
+
+<div id="modal_confirm" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Confirm Save</h4>
+            </div>
+            <div class="modal-body">
+                <p>Do you want to save?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-success btn-sm" data-dismiss="modal" (click)="save()">
+                    <i class="fa fa-save"></i>&nbsp;Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row col-md-12"><br/>
+    <div class="panel-group" id="accordion">
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_CP">Company Profile</a> 
+              </h4>
+          </div>
+          <div id="collapse_CP" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                  <app-company-profile [companyProfileID]="companyProfileID" [firmID]="firm.firmID" (updateCertFormToParent)="getCertificateForm($event)" (updateChildFormToParent)= getChild($event)></app-company-profile>
+                </div>  
+              </div>
+          </div>
+      </div>
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_OFD">Overall Firm Demographics</a> 
+              </h4>
+          </div>
+          <div id="collapse_OFD" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                  <app-firm-demographics [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild1($event)></app-firm-demographics>
+                </div> 
+              </div>
+          </div>
+      </div>
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_FLMDP">Firm Leadership/Management Demographic Profile</a> 
+              </h4>
+          </div>
+          <div id="collapse_FLMDP" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                  <app-firm-leadership-demographic [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild2($event)></app-firm-leadership-demographic>
+                </div> 
+              </div>
+          </div>
+      </div>
+     <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_PAP">Number of Promotions from Associate to Partner</a> 
+              </h4>
+          </div>
+          <div id="collapse_PAP" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                  <app-promotions-assoc-partner [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild3($event)></app-promotions-assoc-partner>
+                </div> 
+              </div>
+          </div>
+      </div> 
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_LWLTF">Lawyers Who Left The Firm</a> 
+              </h4>
+          </div>
+          <div id="collapse_LWLTF" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                    <app-lawyers-left [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild4($event)></app-lawyers-left>
+                </div> 
+              </div>
+          </div>
+      </div>
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_H">Hires</a> 
+              </h4>
+          </div>
+          <div id="collapse_H" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                    <app-lawyers-joined [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild5($event)></app-lawyers-joined>
+                </div> 
+              </div>
+          </div>
+      </div>
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_LWRHS">Lawyers Working Reduced Hours Schedule</a> 
+              </h4>
+          </div>
+          <div id="collapse_LWRHS" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                    <app-lawyers-reduced-hours [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild6($event)></app-lawyers-reduced-hours>
+                </div> 
+              </div>
+          </div>
+      </div>
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_HCP">Top 10% Highest Compensated Partners</a> 
+              </h4>
+          </div>
+          <div id="collapse_HCP" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                    <app-top-ten-highest-compensated-partners [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild7($event)></app-top-ten-highest-compensated-partners>
+                </div> 
+              </div>
+          </div>
+      </div>
+      <div class="panel panel-primary" id="accordion">
+          <div class="panel-heading"> 
+              <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapse_UIA">Undertaken Initiatives/Actions</a> 
+              </h4>
+          </div>
+          <div id="collapse_UIA" class="panel-collapse collapse"> 
+              <div class="panel-body">
+                <div class="container-fluid">
+                    <app-undertaken-initiatives [companyProfileID]="companyProfileID" (updateChildFormToParent)= getChild8($event)></app-undertaken-initiatives>
+                </div> 
+              </div>
+          </div>
+      </div> 
+    </div>
+</div>

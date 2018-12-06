@@ -1,0 +1,156 @@
+<fieldset [disabled]="isExisting">
+
+<div class="row">
+  <!-- <div class="panel panel-primary">
+    <div class="panel-body"> -->
+    <form [formGroup]="myForm">
+
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-12">
+            <label class="control-label input-sm">Firm Name</label>
+            <input type="text" formControlName="Firmname" class="form-control input-sm" onkeypress='return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || ( event.charCode == 32)' pattern="[a-zA-Z ]*" />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="control-label input-sm">Head of Firm/CEO/Firm-wide Managing Partner</label>
+            <input type="text" formControlName="Firmhead" class="form-control input-sm" onkeypress='return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || ( event.charCode == 32)' pattern="[a-zA-Z ]*"/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="control-label input-sm">Date of Survey Completion</label>
+            <div class="input-group">
+              <input type="date" *ngIf="!isExisting" formControlName="Datecomp" class="form-control input-sm"/> <!--date filter-->
+              <input type="input" *ngIf="isExisting" value="{{this.CPdata.datecomp | date : 'MM/dd/yyyy'}}" class="form-control input-sm"/> 
+              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+          <div class="row">
+            <div class="col-md-12">
+              <label class="control-label input-sm">Survey Respondent Contact Name</label>
+              <input type="text" formControlName="Srcname"  class="form-control input-sm" onkeypress='return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || ( event.charCode == 32)' pattern="[a-zA-Z ]*"/>
+              <!-- <select class="form-control input-sm">
+                <option value="">--Select Category--</option>
+              </select> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label class="control-label input-sm">Survey Respondent Contact Title</label>
+              <input type="text" formControlName="Srctitle" class="form-control input-sm" onkeypress='return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || ( event.charCode == 32)' pattern="[a-zA-Z ]*"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label class="control-label input-sm">Survey Respondent Contact Email</label>
+              <input type="text" formControlName="Srcemail" class="form-control input-sm" onkeypress='return (event.charCode >= 65 && event.charCode <= 90) || (event.charCode >= 97 && event.charCode <= 122) || ( event.charCode == 32 || event.charCode == 64 || event.charCode == 46)' pattern="[a-zA-Z ]*"/>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <label class="control-label input-sm">Total number of lawyer firm-wide, As of December 31, 2017</label>
+            <input type="text" formControlName="Totalfw" class="form-control input-sm" onkeypress='return event.charCode >= 48 && event.charCode <=57' />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <label class="control-label input-sm">Total number of U.S. lawyer firm-wide, As of December 31, 2017</label>
+            <input type="text" formControlName="Totalusfw" class="form-control input-sm" onkeypress='return event.charCode >= 48 && event.charCode <= 57' />
+          </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+              <label class="control-label input-sm">Based on your answer to the previous question, Please check the size category that fits your firm</label>
+              <ul class="nav">
+                <li class="input-group">
+                  <label class="control-label input-sm"><input formControlName="Sizecat" type="radio" value="1" />&nbsp;1 Attorney</label>&nbsp;
+                  <label class="control-label input-sm"><input formControlName="Sizecat" type="radio" value="2" />&nbsp;2-20 Attorney</label>
+                  <label class="control-label input-sm"><input formControlName="Sizecat" type="radio" value="3" />&nbsp;21-100 Attorney</label>&nbsp;
+                  <label class="control-label input-sm"><input formControlName="Sizecat" type="radio" value="4" />&nbsp;101-300 Attorney</label>
+                  <label class="control-label input-sm"><input formControlName="Sizecat" type="radio" value="5" />&nbsp;301+ Attorney</label>
+                </li>
+              </ul>
+            </div>
+          </div>
+      </div>
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-md-12">
+            <label class="control-label input-sm">Is firm women-owned, minority-owned, disabled-owner or LGBT-owned?</label>
+            <ul class="nav">
+              <li class="input-group">
+                <label class="control-label input-sm"><input type="radio" value="Yes" formControlName="Firmown"/>&nbsp;Yes</label>&nbsp;
+                <label class="control-label input-sm"><input type="radio" value="No" formControlName="Firmown"/>&nbsp;No</label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="control-label input-sm">If yes, What is the category of ownership?</label>
+            <input type="text" formControlName="Catown" class="form-control input-sm"/>
+          </div>
+          <div class="col-md-6">
+            <label class="control-label input-sm">If yes, Is the firm Certified?</label>
+            <div class="col-md-12">
+              <label class="control-label input-sm"><input type="radio" value="Yes" formControlName="Firmcert"/>&nbsp;Yes</label>&nbsp;
+              <label class="control-label input-sm"><input type="radio" value="No" formControlName="Firmcert"/>&nbsp;No</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <form [formGroup]="certform">
+              <label class="control-label input-sm">If the firm is Certified, Please name the certifying entity(ies) and date of certification(s):</label>
+              <table class="table table-bordered table-striped table-hover input-sm">
+                <!-- table table-bordered table-striped table-hover input-sm -->
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Date of Certification</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let Certificates of tempCertificates">
+                    <td>{{Certificates.name}}</td>
+                    <td>{{Certificates.dateCert | date:'MM/dd/yyy' }}</td>
+                    <td align="center">
+                      <div class="btn-group">
+                        <!-- <a (click)="mainDetails()"  class="btn btn-default btn-xs" data-toggle="tab" data-target="#dep_editor" title="More Details"><i class="fa fa-search-plus"></i></a> -->
+                        <a (click)="mainDetails()"  class="btn btn-default btn-xs" data-toggle="tab" data-target="#dep_editor" title="Edit"><i class="fa fa-edit"></i></a>
+                        <a (click)="mainDelete()" class="btn btn-default btn-xs" title="Delete"><i class="fa fa-trash"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+            <div class="col-md-12">
+          
+              <label class="control-label input-sm">Name:</label>
+              <input [(ngModel)]="tempCertificate.name" type="text" class="form-control input-sm"/>
+              <label class="control-label input-sm">Date of certification:</label>
+              <input [(ngModel)]="tempCertificate.dateCert" type="date"  class="form-control input-sm"/><br>
+              <button (click)='addcert(tempCertificate)'  class="btn btn-success btn-sm" data-dismiss="modal">
+                  <i class="fa fa-plus"></i>&nbsp;Add
+              </button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+  <!-- </div> -->
+</div>
+</fieldset>

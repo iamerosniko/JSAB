@@ -1,0 +1,33 @@
+<div class="row">
+    <fieldset [disabled]="isExisting" >
+      
+    <form [formGroup]="myForm">
+    <table class="table table-inverse table-bordered table-hover table-striped input-sm">
+        <thead>
+            <tr>
+                <th>&nbsp;</th>
+                <th *ngFor="let title of firmLead">{{title}}</th>
+            </tr>
+        </thead>
+        <tbody formArrayName="numbers">
+            <tr *ngFor="let address of myForm.controls.numbers.controls; let i=index" [formGroupName]="i">
+                <th>
+                    <!-- -->
+                    {{ myForm.controls['numbers'].at(i).controls['NumberQuestion'].value }}
+                    <!-- {{i}} -->
+                </th>
+                <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="MinorityFemale"></td>
+                <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="MinorityMale"></td>
+                <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="WhiteFemale"></td>
+                <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="WhiteMale"></td>
+                <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="LGBT"></td>
+                <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="Disabled"></td>
+                <td>{{compute(i)}}</td>
+            </tr>
+        </tbody>
+    </table>
+    </form>
+    </fieldset>
+    <!-- </div> -->
+    <!-- </div> -->
+</div>

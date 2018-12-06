@@ -1,0 +1,12 @@
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\bin\Debug\netcoreapp2.0\API.deps.json
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\bin\Debug\netcoreapp2.0\API.runtimeconfig.json
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\bin\Debug\netcoreapp2.0\API.runtimeconfig.dev.json
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\bin\Debug\netcoreapp2.0\API.dll
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\bin\Debug\netcoreapp2.0\API.pdb
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\API.csprojAssemblyReference.cache
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\API.csproj.CoreCompileInputs.cache
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\UserSecretsAssemblyInfo.cs
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\API.AssemblyInfoInputs.cache
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\API.AssemblyInfo.cs
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\API.dll
+C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Debug\netcoreapp2.0\API.pdb

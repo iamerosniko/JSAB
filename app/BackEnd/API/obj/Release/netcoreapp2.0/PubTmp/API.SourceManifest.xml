@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sitemanifest>
+  <IisApp path="C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Release\netcoreapp2.0\PubTmp\Out\" />
+  <dbfullsql path="C:\Users\alverer\Desktop\Apps\aba\JSAB\app\API\obj\Release\netcoreapp2.0\PubTmp\EFSQLScripts\API.Tables.ADContext.sql" />
+</sitemanifest>

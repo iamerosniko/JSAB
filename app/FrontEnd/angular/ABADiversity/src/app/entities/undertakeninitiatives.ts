@@ -1,0 +1,37 @@
+export interface UndertakenInitiatives {
+  answer1?:string;
+  answer2?:string;
+  answer3?:string;
+  answer4?:string;
+  answer5?:string;
+  answer6?:string;
+  answer7?:string;
+  answer8?:string;
+  answer9?:string;
+  answer10?:string;
+  answer11?:string;
+  answer12?:string;
+  answer13?:string;
+  answer14?:string;
+  answer15?:string;
+  answer16?:string;
+  answer17?:string;
+  comment1?:string;
+  comment2?:string;
+  comment3?:string;
+  comment4?:string;
+  comment5?:string;
+  comment6?:string;
+  comment7?:string;
+  comment8?:string;
+  comment9?:string;
+  comment10?:string;
+  comment11?:string;
+  comment12?:string;
+  comment13?:string;
+  comment14?:string;
+  comment15?:string;
+  comment16?:string;
+  comment17?:string;
+  mainComment?:string;
+}

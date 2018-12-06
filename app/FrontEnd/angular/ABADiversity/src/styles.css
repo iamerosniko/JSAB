@@ -1,0 +1,13 @@
+/* You can add global styles to this file, and also import other style files */
+html, body {
+    font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
+    font-size: 12.5px;
+    background-color: #ecf0f5;
+}
+
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-attachment: fixed;
+    height: 100%;
+}

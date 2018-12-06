@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAgCn96Sq6j0mUArErOeeeCwAAAAACAAAAAAADZgAAwAAAABAAAAD0zINr0KGCx8QbeZ/x4teLAAAAAASAAACgAAAAEAAAAPp4Faa9Aky0RdUc8F96Y8KAAAAARKdgPUKa2ZlBi14D1pFL3umNEzJWdq79eTDE6jFDi7lwGitkdGXDm3ztiOAAe0lMPqrUq+qMZnkbCiH3bY3XtZsnR3E8yo5wVSGfpD/ddFuUq4IDbqy4oIijeTfsPFY75aI/7Gt8+nSYRapJc6faKo+T3welqLbqMPgujIgtwdMUAAAAdQz2lEX909MU3afOdv9WMYdfGYc=</EncryptedPassword>
+  </PropertyGroup>
+  <ItemGroup>
+    <DestinationConnectionStrings Include="DefaultConnection">
+      <Value>Data Source=tcp:biztechdbserversandbox.database.windows.net,1433%3bInitial Catalog=ABADIversity%3bUser Id=biztech%40biztechdbserversandbox.database.windows.net%3bPassword=L0c%40ldatabase%3b</Value>
+    </DestinationConnectionStrings>
+  </ItemGroup>
+  <ItemGroup>
+    <EFMigrations Include="API.Tables.ADContext">
+      <Value>Data Source=tcp:biztechdbserversandbox.database.windows.net,1433%3bInitial Catalog=ABADIversity%3bUser Id=biztech%40biztechdbserversandbox.database.windows.net%3bPassword=L0c%40ldatabase%3b</Value>
+    </EFMigrations>
+  </ItemGroup>
+</Project>

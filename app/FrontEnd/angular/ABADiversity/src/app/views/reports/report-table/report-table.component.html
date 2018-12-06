@@ -1,0 +1,55 @@
+<div class="row col-md-12">
+    <div class="row col-md-12">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="display: block;" *ngIf="lineChartTriggerTrial">
+            <canvas id="reportCanvas" baseChart
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)" ></canvas>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row col-md-12">
+        <div class="col-md-1"></div>
+        <div class="col-md-10" style="display: block;" *ngIf="lineChartTriggerRate">
+            <canvas id="reportCanvas" baseChart
+                [datasets]="lineGraphData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartTypeRate"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)" ></canvas>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <div class="row col-md-12"><br/></div>
+</div>
+<div class="row col-md-12" *ngIf="lineChartTriggerTrial">
+    <button class="btn btn-primary btn-sm" (click)="updateGraphRate(i)">Rate</button>
+</div>
+<div class="row col-md-12"><br/></div>
+<div>
+  <table class="table table-inverse table-bordered table-hover table-striped input-sm" id="pdf_table" >
+      <tr id="tableName">
+          <th align="center" style="max-width: 100px; min-width: 100px;" (click)="updateGraph(i)">{{selectedSurveyYear.race}}</th>
+      </tr>
+      <tr id="tableHead">
+          <th>&nbsp;</th>
+          <th  align="center" style="max-width: 100px; min-width: 100px;" *ngFor="let title of reportTypeRaceVsRole">{{title}}</th>
+      </tr>
+      <tr *ngFor="let rolevalues of selectedSurveyYear.myRoleValues;">
+          <td align="right">{{rolevalues.year}}</td>
+          <td align="center">{{rolevalues.equityPartners}}</td>
+          <td align="center">{{rolevalues.nonEquityPartners}}</td>
+          <td align="center">{{rolevalues.associates}}</td>
+          <td align="center">{{rolevalues.counsel}}</td>
+          <td align="center">{{rolevalues.otherLawyers}}</td>
+          <td align="center">{{rolevalues.total}}</td>
+      </tr>
+  </table>
+</div>

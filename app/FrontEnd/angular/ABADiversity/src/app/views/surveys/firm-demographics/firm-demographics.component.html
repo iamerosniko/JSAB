@@ -1,0 +1,30 @@
+<div class="row">
+    <form [formGroup]="myForm">
+        <fieldset [disabled]="isExisting" >
+            <table class="table table-inverse table-bordered table-hover table-striped input-sm">
+                    <thead>
+                        <tr>
+                            <th>&nbsp;</th>
+                            <th *ngFor="let title of firmDemo">{{title}}</th>
+                        </tr>
+                    </thead>
+                    <tbody formArrayName="regions">
+                        <tr *ngFor="let address of myForm.controls.regions.controls; let i=index" [formGroupName]="i">
+                            <th>
+                                <!-- -->
+                                <!-- {{sample(i)}} -->
+                                {{ myForm.controls['regions'].at(i).controls['regionName'].value }}
+                                <!-- {{i}} -->
+                            </th>
+                            <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="EquityPartners"></td>
+                            <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="NonEquityPartners"></td>
+                            <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="Associates"></td>
+                            <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="Counsel"></td>
+                            <td><input type='text' class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57' pattern="[0-9]*[0-9]" formControlName="OtherLawyers"></td>
+                            <td>{{compute(i)}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+        </fieldset>
+    </form>
+</div>
