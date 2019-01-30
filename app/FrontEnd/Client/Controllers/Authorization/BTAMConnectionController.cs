@@ -8,173 +8,272 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Client.Controllers.Authorization
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class BTAMConnectionController : ControllerBase
-  {
-    private TokenFactory _tokenFactory;
-    #region API
-    [Route("GetUserName")]
-    [HttpGet]
-    public CurrentUser GetSignInUsername()
+    public class BTAMConnectionController : ControllerBase
     {
-      var username = this.User.Identity.Name;
+        private TokenFactory _tokenFactory;
 
-      return new CurrentUser
-      {
-        UserName = username
-      };
-    }
-
-    [HttpGet("GetBTAMURL")]
-    public BTAMEntity Get()
-    {
-      return new BTAMEntity { BTAMURL = Startup.Configuration["BTAMURL"] };
-    }
-
-    [Route("GetAuthorizationUser")]
-    [HttpPost]
-    //public async Task<AppToken> GetAuthorizationToken([FromBody] string authenticationtoken)
-    public AppToken GetAuthorizationToken([FromBody] AppToken authenticationToken)
-    {
-      _tokenFactory = new TokenFactory();
-
-      if (authenticationToken.Token != "")
-      {
-        //1)Extracttoken is used to extract all details required before generating an authorization token
-        //2)GenerateAuthorizationToken is used to generate Authorization token
-        var authorizationToken = _tokenFactory.GenerateAuthorizationToken(_tokenFactory.ExtractToken(authenticationToken.Token));
-        HttpContext.Session.SetString("apiToken", authorizationToken);
-        return new AppToken
+        #region API
+        [Route("AppSignIn")]
+        [HttpGet]
+        public async Task<UserAppRoleDTO> AppSignIn()
         {
-          Token = authorizationToken,
-          TokenName = "Authorization"
-        };
-      }
-      return new AppToken
-      {
-        TokenName = "Authorization"
-      };
+            APIAccess apiAccess = new APIAccess("AppSignIn2", Get().BTAMURL);
+
+            AM_AppSignIn si = new AM_AppSignIn
+            {
+                AppURL = Startup.Configuration["Internal:HostName"],
+                UserName = GetSignInUsername().UserName
+            };
+
+            var body = JsonConvert.SerializeObject(si);
+            var result = await apiAccess.PostRequest(body);
+            var currentUser = result == null ? new UserAppRoleDTO() : JsonConvert.DeserializeObject<UserAppRoleDTO>(result);
+
+            if (currentUser != new UserAppRoleDTO())
+            {
+                apiAccess = new APIAccess("Authenticate/" + Startup.Configuration["Internal:AppSecurityKey"], Get().BTAMURL);
+                body = JsonConvert.SerializeObject(currentUser);
+                result = await apiAccess.PostRequest(body);
+
+                var authenticationToken = result != null ? JsonConvert.DeserializeObject<AppToken>(result) : new AppToken();
+                currentUser.AuthenticationToken = authenticationToken.Token;
+                currentUser.AuthorizationToken = GetAuthorizationToken(authenticationToken).Token;
+            }
+            else
+            {
+
+            }
+
+
+            return currentUser;
+        }
+
+        [Route("AppSignIn/{username}")]
+        [HttpGet]
+        public async Task<UserAppRoleDTO> AppSignIn([FromRoute]string username)
+        {
+            APIAccess apiAccess = new APIAccess("AppSignIn2", Get().BTAMURL);
+
+            AM_AppSignIn si = new AM_AppSignIn
+            {
+                AppURL = Startup.Configuration["Internal:HostName"],
+                UserName = username
+            };
+
+            var body = JsonConvert.SerializeObject(si);
+            var result = await apiAccess.PostRequest(body);
+            var currentUser = result == null ? new UserAppRoleDTO() : JsonConvert.DeserializeObject<UserAppRoleDTO>(result);
+
+            if (currentUser != new UserAppRoleDTO())
+            {
+                apiAccess = new APIAccess("Authenticate/" + Startup.Configuration["Internal:AppSecurityKey"], Get().BTAMURL);
+                body = JsonConvert.SerializeObject(currentUser);
+                result = await apiAccess.PostRequest(body);
+
+                var authenticationToken = result != null ? JsonConvert.DeserializeObject<AppToken>(result) : new AppToken();
+                currentUser.AuthenticationToken = authenticationToken.Token;
+                currentUser.AuthorizationToken = GetAuthorizationToken(authenticationToken).Token;
+            }
+            else
+            {
+
+            }
+
+
+            return currentUser;
+        }
+
+        #endregion
+        #region APIHELPER
+        //[HttpGet("GetBTAMURL")]
+        public BTAMEntity Get()
+        {
+            return new BTAMEntity { BTAMURL = Startup.Configuration["BTAMURL"] };
+        }
+
+        //[Route("GetUserName")]
+        //[HttpGet]
+        public CurrentUser GetSignInUsername()
+        {
+            var username = this.User.Identity.Name;
+
+            return new CurrentUser
+            {
+                UserName = username
+            };
+        }
+
+        //[Route("GetAuthorizationUser")]
+        //[HttpPost]
+        //public async Task<AppToken> GetAuthorizationToken([FromBody] string authenticationtoken)
+        public AppToken GetAuthorizationToken([FromBody] AppToken authenticationToken)
+        {
+            _tokenFactory = new TokenFactory();
+
+            if (authenticationToken.Token != "")
+            {
+                //1)Extracttoken is used to extract all details required before generating an authorization token
+                //2)GenerateAuthorizationToken is used to generate Authorization token
+                var authorizationToken = _tokenFactory.GenerateAuthorizationToken(_tokenFactory.ExtractToken(authenticationToken.Token));
+                HttpContext.Session.SetString("apiToken", authorizationToken);
+                return new AppToken
+                {
+                    Token = authorizationToken,
+                    TokenName = "Authorization"
+                };
+            }
+            return new AppToken
+            {
+                TokenName = "Authorization"
+            };
+        }
+        #endregion
     }
-    #endregion
-  }
 
-  #region CLASSHELPER
-  public class TokenFactory
-  {
-    private List<Claim> _claims;
-
-    #region "Public Methods"
-    public List<Claim> ExtractToken(String token)
+    #region CLASSHELPER
+    public class TokenFactory
     {
-      List<Claim> claims = new List<Claim>();
+        private List<Claim> _claims;
 
-      _claims = new List<Claim>();
+        #region "Public Methods"
+        public List<Claim> ExtractToken(String token)
+        {
+            List<Claim> claims = new List<Claim>();
 
-      var jwtToken = new JwtSecurityToken(token);
+            _claims = new List<Claim>();
 
-      var names = jwtToken.Claims.
-          Where(x => x.Type == ClaimTypes.Name);
+            var jwtToken = new JwtSecurityToken(token);
 
-      var roles = jwtToken.Claims.
-          Where(x => x.Type == ClaimTypes.Role);
+            var names = jwtToken.Claims.
+                Where(x => x.Type == ClaimTypes.Name);
 
-      var urls = jwtToken.Claims.
-          Where(x => x.Type == ClaimTypes.Uri);
+            var roles = jwtToken.Claims.
+                Where(x => x.Type == ClaimTypes.Role);
 
-      var idS = jwtToken.Claims.
-          Where(x => x.Type == ClaimTypes.Sid);
+            var urls = jwtToken.Claims.
+                Where(x => x.Type == ClaimTypes.Uri);
 
-      var firstNames = jwtToken.Claims.
-          Where(x => x.Type == ClaimTypes.GivenName);
+            var idS = jwtToken.Claims.
+                Where(x => x.Type == ClaimTypes.Sid);
 
-      var surnames = jwtToken.Claims.
-          Where(x => x.Type == ClaimTypes.Surname);
+            var firstNames = jwtToken.Claims.
+                Where(x => x.Type == ClaimTypes.GivenName);
 
-      AddToClaim(names);
-      AddToClaim(roles);
-      AddToClaim(urls);
-      AddToClaim(firstNames);
-      AddToClaim(surnames);
+            var surnames = jwtToken.Claims.
+                Where(x => x.Type == ClaimTypes.Surname);
 
-      claims = _claims;
+            AddToClaim(names);
+            AddToClaim(roles);
+            AddToClaim(urls);
+            AddToClaim(firstNames);
+            AddToClaim(surnames);
 
-      return claims;
+            claims = _claims;
+
+            return claims;
+        }
+
+        public string GenerateAuthorizationToken(List<Claim> claims)
+        {
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    Startup.Configuration["Internal:IssuerSigningKey"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: Startup.Configuration["Internal:ValidIssuer"],
+                audience: Startup.Configuration["Internal:ValidAudience"],
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: creds
+            );
+
+            var myToken = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return myToken;
+        }
+
+        #endregion
+
+        #region "Private Methods"
+
+        private void AddToClaim(IEnumerable<Claim> claims)
+        {
+            foreach (var claim in claims)
+            {
+                _claims.Add(claim);
+            }
+        }
+
+        #endregion
     }
 
-    public string GenerateAuthorizationToken(List<Claim> claims)
+    public class UserAppRoleDTO
     {
-      var key = new SymmetricSecurityKey(
-          Encoding.UTF8.GetBytes(
-              Startup.Configuration["WebApiServer:IssuerSigningKey"]));
-      var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-      var token = new JwtSecurityToken(
-          issuer: Startup.Configuration["WebApiServer:ValidIssuer"],
-          audience: Startup.Configuration["WebApiServer:ValidAudience"],
-          claims: claims,
-          expires: DateTime.UtcNow.AddMinutes(30),
-          signingCredentials: creds
-      );
-
-      System.Diagnostics.Debug.WriteLine(Startup.Configuration["WebApiServer:IssuerSigningKey"]);
-      System.Diagnostics.Debug.WriteLine(Startup.Configuration["WebApiServer:ValidAudience"]);
-      System.Diagnostics.Debug.WriteLine(Startup.Configuration["WebApiServer:ValidIssuer"]);
-
-      var myToken = new JwtSecurityTokenHandler().WriteToken(token);
-
-      return myToken;
+        public int UserAppID { get; set; }
+        public int UserID { get; set; }
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public int RoleID { get; set; }
+        public string Role { get; set; }
+        public List<ServiceDTO> Services { get; set; }
+        public string AuthenticationToken { get; set; }
+        public string AuthorizationToken { get; set; }
     }
-
-    #endregion
-
-    #region "Private Methods"
-
-    private void AddToClaim(IEnumerable<Claim> claims)
+    public class ServiceDTO
     {
-      foreach (var claim in claims)
-      {
-        _claims.Add(claim);
-      }
+        public int RoleServiceID { get; set; }
+        public string ServiceName { get; set; }
+        public string ServiceDesc { get; set; }
+        public List<AttributesDTO> Attributes { get; set; }
     }
-
-    #endregion
-  }
-  #endregion
-
-  public class CurrentUser
-  {
-    public string UserID { get; set; }
-    public string UserName { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Role { get; set; }
-
-    public CurrentUser()
+    public class AttributesDTO
     {
-      UserID = "";
-      FirstName = "";
-      LastName = "";
-      Role = "NoAccess";
+        public string AttribName { get; set; }
+        public string AttribDesc { get; set; }
     }
-  }
-  public class AppToken
-  {
-    public String TokenName { get; set; }
-    public String Token { get; set; }
-    public AppToken()
+    public class AM_AppSignIn
     {
-      Token = "";
-      TokenName = "";
-    }
-  }
-  public class BTAMEntity
-  {
-    public string BTAMURL { get; set; }
-  }
+        public string AppURL { get; set; }
 
-  
+        public string UserName { get; set; }
+    }
+    public class AppToken
+    {
+        public String TokenName { get; set; }
+        public String Token { get; set; }
+        public AppToken()
+        {
+            Token = "";
+            TokenName = "";
+        }
+    }
+    public class BTAMEntity
+    {
+        public string BTAMURL { get; set; }
+    }
+    public class CurrentUser
+    {
+        public string UserID { get; set; }
+        public string UserName { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Role { get; set; }
+
+        public CurrentUser()
+        {
+            UserID = "";
+            FirstName = "";
+            LastName = "";
+            Role = "NoAccess";
+        }
+    }
+    #endregion 
 }

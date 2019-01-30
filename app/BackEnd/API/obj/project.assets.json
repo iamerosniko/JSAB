@@ -13169,11 +13169,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alverer\\Desktop\\Apps\\aba\\JSAB\\app\\API\\API.csproj",
+      "projectUniqueName": "C:\\Users\\alverer\\Desktop\\Apps\\ABA\\JSAB\\app\\BackEnd\\API\\API.csproj",
       "projectName": "API",
-      "projectPath": "C:\\Users\\alverer\\Desktop\\Apps\\aba\\JSAB\\app\\API\\API.csproj",
+      "projectPath": "C:\\Users\\alverer\\Desktop\\Apps\\ABA\\JSAB\\app\\BackEnd\\API\\API.csproj",
       "packagesPath": "C:\\Users\\alverer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alverer\\Desktop\\Apps\\aba\\JSAB\\app\\API\\obj\\",
+      "outputPath": "C:\\Users\\alverer\\Desktop\\Apps\\ABA\\JSAB\\app\\BackEnd\\API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

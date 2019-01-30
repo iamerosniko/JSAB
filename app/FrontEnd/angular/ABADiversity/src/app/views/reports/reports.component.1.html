@@ -1,0 +1,166 @@
+<div class="row col-md-12">
+  <br/>
+</div>
+<div class="row col-md-12">
+  <!-- <br/> -->
+    <div id="sideBar" class="col-md-3">
+        <div id="sideMenu" class="input-group">
+            <label class="control-label">Firm: </label>
+            <select id="firmBox" type="text" [(ngModel)]="selectedFirm" (change)="updateSelectedFirm()" maxlength="100" class="form-control" >
+                <option selected disabled value="0">Select Firm</option>
+                <option selected value="1">Diversity Rank</option>
+                <option *ngFor="let firmlist of firmList" [value]="firmlist.firmID" (ng-selected)="updateSelectedFirmName(firmlist.firmName)">{{firmlist.firmName}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm!=1">
+            <label class="control-label">Category: </label>
+            <select id="categoryBox" [(ngModel)]="selectedCategory" (change)="updateCategoryMode()" type="text" maxlength="100" class="form-control ng-pristine ng-valid" >
+                <option selected disabled value=100>Select Category</option>
+                <option *ngFor="let firmCategory of firmCategory;" [value]='firmCategory'>{{firmCategory}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm!=1">
+            <label class="control-label">Report Type: </label>
+            <select id="reportTypeBox" [(ngModel)]="selectedReportType" (change)="updateReportType()" type="text" maxlength="100" class="form-control ng-untouched ng-pristine ng-valid" >
+                <option selected disabled value="0">Select Type</option>
+                <option *ngFor="let reportType of reportType">{{reportType}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm==1">
+          <label class="control-label">Position: </label>
+          <select id="categoryBox" [(ngModel)]="selectedDiversityRankPosition" type="text" maxlength="100" class="form-control ng-pristine ng-valid" >
+              <option selected value="All">All</option>
+              <option *ngFor="let diversityRankPosition of diversityRankPosition; let i=index;" [value]='diversityRankPosition'>{{diversityRankPosition}}</option>
+          </select>
+        </div>
+        <div id="sideMenu" class="input-group">
+            <label class="control-label">Group: </label>
+            <select id="reportModeBox" [(ngModel)]="selectedReportGroup" (change)="updateReportGroup()" type="text" maxlength="100" class="form-control ng-untouched ng-pristine ng-valid" >
+                <option selected disabled value="0">Select Group</option>
+                <option *ngFor="let reportGroup of reportGroup">{{reportGroup}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm!=1">
+            <label class="control-label">Base Survey Year : </label>
+            <select id="baseSurveyYearBox" [(ngModel)]="selectedBaseSurveyYear" (change)="updateBaseSurveyYear(index)" type="text" maxlength="100" class="form-control ng-untouched ng-pristine ng-valid" >
+                <option selected disabled value=null>Select Base Year</option>
+                <option *ngFor="let c of years; let q=index;" [value]="c.companyProfileID">{{c.year}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm!=1">
+            <label class="control-label">Top Survey Year : </label>
+            <select id="topSurveyYearBox" [(ngModel)]="selectedTopSurveyYear" (change)="updateTopSurveyYear()" type="text" maxlength="100" class="form-control ng-untouched ng-pristine ng-valid" >
+                <option selected disabled value=null>Select Top Year</option>
+                <option *ngFor="let c of years" [value]="c.companyProfileID">{{c.year}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm==1">
+            <label class="control-label">Base Survey Year : </label>
+            <select id="baseSurveyYearBox" [(ngModel)]="selectedBaseSurveyYearDiversity" type="text" maxlength="100" class="form-control ng-untouched ng-pristine ng-valid" >
+                <option selected disabled value=null>Select Base Year</option>
+                <option *ngFor="let yearsAvailable of yearsAvailable;" [value]="yearsAvailable">{{yearsAvailable}}</option>
+            </select>
+        </div>
+        <div id="sideMenu" class="input-group" *ngIf="selectedFirm==1">
+            <label class="control-label">Top Survey Year : </label>
+            <select id="topSurveyYearBox" [(ngModel)]="selectedTopSurveyYearDiversity" type="text" maxlength="100" class="form-control ng-untouched ng-pristine ng-valid" >
+                <option selected disabled value=null>Select Top Year</option>
+                <option *ngFor="let yearsAvailable of yearsAvailable" [value]="yearsAvailable">{{yearsAvailable}}</option>
+            </select>
+        </div>
+        <div class="col-md-12"><br/></div>
+        <div class="btn-group">
+            <button class="btn btn-primary btn-sm" (click)="genReport(i)"><i class="fa fa-bar-chart"></i>&nbsp;Generate Reports</button>
+        </div>
+    </div>
+    <div class="col-md-9">
+        <div class="row col-md-12" *ngIf="categoryDisplayTrigger==true">
+            <!-- <div class="col-md-3"></div> -->
+            <div class="col-md-12" id="div1">
+                <div class="col-md-8 btn-group">
+                    <div class="col-md-3">
+                        <label class="control-label">
+                            Export with Graph
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-md-12 switch">
+                            <input type="checkbox" id="exportWithGraphBtn" (click)="exportWithGraph()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label">
+                            Export with a Graph as Rate
+                        </label>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-md-12 switch">
+                            <input type="checkbox" (click)="exportWithGraphAsRate()">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-4 btn-group" id="div2">
+                    <button class="btn btn-primary btn-sm" (click)="exportPdf()"><i class="fa fa-file-pdf-o"></i>&nbsp;Export PDF</button>
+                    <button class="btn btn-primary btn-sm" (click)="genPDF()"><i class="fa fa-file-excel-o"></i>&nbsp;Export Excel</button>
+                </div>
+            </div>
+        </div>
+        <!-- boundary -->
+        <div class="col-md-12" id="form_sample">
+            <div class="row col-md-12" *ngIf="categoryDisplayTrigger==true" id="pdf_head">
+                <h2>{{selectedFirmName}}</h2>
+                <h3>{{selectedReportTypeDisplay}}</h3>
+                <h4>{{selectedCategoryModeDisplay}}</h4>
+                <h4>{{selectedReportGroupDisplay}}</h4>
+                <h4 *ngIf="baseSurveyYearDisplay!=topSurveyYearDisplay">{{baseSurveyYearDisplay}} - {{topSurveyYearDisplay}}</h4>
+                <h4 *ngIf="baseSurveyYearDisplay==topSurveyYearDisplay">{{baseSurveyYearDisplay}}</h4>
+            </div>
+            <div class="row col-md-12" *ngIf="diversityComponentDisplay==true" id="pdf_head">
+                <h2>Diversity Ranking</h2>
+                <h3>{{selectedDiversityRankPosition}}</h3>
+                <h4>{{selectedReportGroupDisplay}}</h4>
+                <h4 *ngIf="selectedBaseSurveyYearDiversity!=selectedTopSurveyYearDiversity">{{selectedBaseSurveyYearDiversity}} - {{selectedTopSurveyYearDiversity}}</h4>
+                <h4 *ngIf="selectedBaseSurveyYearDiversity==selectedTopSurveyYearDiversity">{{selectedBaseSurveyYearDiversity}}</h4>
+            </div>
+            <div class="row col-md-12" *ngIf="diversityComponentDisplay==true">
+                <app-report-dashboard
+                [diversityRankData]="diversityRankData"
+                [selectedDiversityRankPositionIndex]="selectedDiversityRankPositionIndex"
+                [lineChartOptions]="lineChartOptions"
+                [lineChartLabels]="lineChartLabels"
+                [lineChartLegend]="lineChartLegend"
+                [lineChartTypeRate]="lineChartTypeRate"
+                [lineChartData]="lineChartData"
+                ></app-report-dashboard>
+            </div>
+            <div class="row col-md-12" *ngFor="let selectedSurveyYear of selectedSurveyYear; let i=index;" >
+            <!-- <div class="row col-md-12" *ngIf="categoryDisplayTrigger==true || pdfExportDisplayTrigger ==true"> -->
+                <app-report-table 
+                *ngIf="categoryDisplayTrigger==true"
+                [selectedSurveyYear]="selectedSurveyYear"
+                [reportTypeRaceVsRole]="reportTypeRaceVsRole"
+                [selectedSurveyYearGraph]="selectedSurveyYearGraph"
+                [lineChartOptions]="lineChartOptions"
+                [lineChartLabels]="lineChartLabels"
+                [lineChartData]="lineChartData"
+                [lineGraphData]="lineGraphData"
+                [lineChartLegend]="lineChartLegend"
+                [lineChartType]="lineChartType"
+                [lineChartTypeRate]="lineChartTypeRate"
+                [lineChartTriggerTrial]="lineChartTriggerTrial"
+                [lineChartTriggerRate]="lineChartTriggerRate"
+                [pdfExportDisplayTrigger]="pdfExportDisplayTrigger"
+                [pdfRateExportDisplayTrigger]="pdfRateExportDisplayTrigger"
+                [i]="i"
+                [years]="years"
+                [selectedBaseSurveyYear]="selectedBaseSurveyYear"
+                [selectedTopSurveyYear]="selectedTopSurveyYear"
+                [baseSurveyYear]="baseSurveyYear"
+                [topSurveyYear]="topSurveyYear"
+                ></app-report-table>
+            </div>
+        </div>
+    </div>
+</div>

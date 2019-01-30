@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyProfiles,Firms,Years,FirmDemographics } from '../../entities/entities';
 import { SurveyService } from '../../services/survey.service';
-import { FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
 import { ReportService } from '../../services/report.services';
 import { RaceVSRoles } from '../../entities/racevsroles';
 import { defer } from 'q';
@@ -17,6 +15,11 @@ import * as haha from 'html2canvas';
   styleUrls: ['./reports.component.css']
 })
 export class ReportsComponent implements OnInit {
+
+  showAllBarChart:boolean=false;
+  showAllRateChart:boolean=false;
+  gate:number = 0;
+
   mainList:Firms[]=[];
   firmList:Firms[]=[];
   firmListName:Firms[]=[];
@@ -59,7 +62,7 @@ export class ReportsComponent implements OnInit {
     'Men'
   ]
   reportGroup:string[]=[
-    'General',
+    'Race',
     'Minority'
   ];
   diversityRankPosition:string[]=[
@@ -130,20 +133,19 @@ export class ReportsComponent implements OnInit {
   
   pdfImages:any[];
 
-  myForm: FormGroup;
   firmDemographics:FirmDemographics[]=[];
   firmDemoassign:string[]=['EquityPartners','NonEquityPartners','Associates','Counsel','OtherLawyers','Totals'];
   lineChartLabels:Array<any> = ['Equity Partners','Non-Equity Partners','Associates','Counsel','Other Lawyers'];// ahhh i template?
   lineChartOptions:any = {
     responsive: true,
-    scales: {
-      xAxes: [{ stacked: true }],
-      yAxes: [{ stacked: true }]
-    }
+    // scales: {
+    //   xAxes: [{ stacked: true }],
+    //   yAxes: [{ stacked: true }]
+    // }
   };
   lineChartTrigger:string="";
-  lineChartTriggerTrial:any;
-  lineChartTriggerRate:any;
+  lineChartTriggerTrial:boolean;
+  lineChartTriggerRate:boolean;
   lineChartData:Array<any> = [];
   lineGraphData:Array<any> = [];
   lineChartLegend:boolean = true;
@@ -337,7 +339,7 @@ export class ReportsComponent implements OnInit {
     console.log(this.selectedDiversityRankPosition)
     console.log(this.selectedDiversityRankPositionIndex)
     console.log("---------- Update selected Position END ----------")
-    if (this.selectedReportGroup=="General"){
+    if (this.selectedReportGroup=="Race"){
       this.selectedReportGroupDiversity=1
     } else if (this.selectedReportGroup=="Minority") {
       this.selectedReportGroupDiversity=2
@@ -371,8 +373,8 @@ export class ReportsComponent implements OnInit {
       console.log("---------- Get Diversity Rank END ----------")
     } else if (this.diversityComponentDisplay==false){
       this.categoryDisplayTrigger=true
-      if (this.selectedReportGroup=="General"){
-        console.log("General Service START --------------->")
+      if (this.selectedReportGroup=="Race"){
+        console.log("Race Service START --------------->")
         this.selectedSurveyYear = await this.reportService.getRaceVsRoles(
           this.selectedFirmID,
           this.selectedCategoryMode,
@@ -385,7 +387,7 @@ export class ReportsComponent implements OnInit {
           this.selectedBaseSurveyYear,
           this.selectedTopSurveyYear
         )
-        console.log("<--------------- General Service END")
+        console.log("<--------------- Race Service END")
       } else if (this.selectedReportGroup=="Minority") {
         console.log("Minority Service START --------------->")
         this.selectedSurveyYear = await this.reportService.getMinorities(
@@ -441,8 +443,7 @@ export class ReportsComponent implements OnInit {
   }
  
   constructor(private surveySvc : SurveyService,
-     private reportService : ReportService,
-     private fb:FormBuilder, private router:Router) { }
+     private reportService : ReportService,) { }
 
   async ngOnInit() {
     await this.getFirms();
@@ -459,18 +460,19 @@ export class ReportsComponent implements OnInit {
 
 async updateGraph(i){
   if (this.lineChartTriggerTrial==i && (this.pdfExportDisplayTrigger == false || this.pdfRateExportDisplayTrigger == false)){
-    this.lineChartTriggerTrial = "off";
-    this.lineChartTriggerRate=="off";
+    // this.lineChartTriggerTrial = "off";
+    // this.lineChartTriggerRate=="off";
     console.log("1st statement DONE")
     console.log("lineChartTriggerTrial - " + this.lineChartTriggerTrial)
     console.log("lineChartTriggerRate - " + this.lineChartTriggerRate)
     console.log("pdfExportDisplayTrigger - " + this.pdfExportDisplayTrigger)
     console.log("pdfRateExportDisplayTrigger - " + this.pdfRateExportDisplayTrigger)
-  } else if ((this.pdfExportDisplayTrigger == false && this.pdfRateExportDisplayTrigger == false) && (this.lineChartTriggerTrial=="off" || this.lineChartTriggerRate=="off")) {
+  } else if ((this.pdfExportDisplayTrigger == false && this.pdfRateExportDisplayTrigger == false) ) {
    var graph=[];
    var iterate=i;
    this.selectedSurveyYearGraph[iterate].myRoleValues.forEach(oneRolesValues => {
-     
+    if((oneRolesValues.year=this.baseSurveyYearDisplay.toString()) || (oneRolesValues.year=this.topSurveyYearDisplay.toString())){
+    }
     if(oneRolesValues.year!='Rate' && this.selectedSurveyYearGraph[iterate].race!=('White'||'LGBT'||'Disabled'||'Women'||'Men')){
       var datasample: Array<number>=[];
       
@@ -525,7 +527,6 @@ async updateGraph(i){
     console.log("RACE!!!")
     console.log(selectedRace)
     this.selectedSurveyYearGraph[iterate].myRoleValues.forEach(oneRolesValues => {
-
       if(oneRolesValues.year=='Rate'){
         var datasamplerate: Array<number>=[];
         datasamplerate.push(+oneRolesValues.equityPartners.split("%")[0]);
@@ -536,7 +537,7 @@ async updateGraph(i){
 
         var samplerate:any =  {data:datasamplerate,label: oneRolesValues.year };
         // iterate+=1;
-        this.lineChartTriggerRate = "off";
+        // this.lineChartTriggerRate = "off";
         this.lineChartTriggerTrial = iterate;
         console.log("SAMPLE")
         console.log(samplerate)
@@ -573,7 +574,7 @@ async updateGraphRate(i){
       
       var samplerate:any =  {data:datasamplerate,label: oneRolesValues.year };
       // iterate+=1;
-      this.lineChartTriggerTrial = "off";
+      // this.lineChartTriggerTrial = "off";
       this.lineChartTriggerRate = iterate;
       console.log("SAMPLE")
       console.log(samplerate)
@@ -625,37 +626,40 @@ async exportPdf(){
 
 // if(document.getElementById("exportWithGraphBtn")){
 //   document.getElementById("1").value="ON";}
-
+console.log("hiding gate")
+this.gate=1;
 console.log(this.pdfExportDisplayTrigger)
-var data = await document.getElementById('form_sample');  
-var data_pdf_head = await document.getElementById('pdf_head');  
-var data_pdf_bar = await document.getElementById('pdf_bar');  
-var data_pdf_line = await document.getElementById('pdf_line');  
-var data_pdf_table = await document.getElementById('pdf_table'); 
-// this.pdfImages = await document.getElementById('pdf_bar');   
-await haha(data).then(canvas => {   //await haha(data).then(canvas => {
-  // Few necessary setting options  
-  var imgWidth = 210;     
-  var pageHeight = 295;    
-  var imgHeight = canvas.height * imgWidth / canvas.width;  
-  var heightLeft = imgHeight;  
-  var pagesplit: true;
-  heightLeft -= pageHeight;
-  
-  const contentDataURL = canvas.toDataURL('image/png')  
-  let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  pt
-  var position = 0;  
-  pdf.addImage(contentDataURL, 'png', 0, position, imgWidth, imgHeight, pagesplit)  
-  // pdf.addImage(contentDataURL, 'png', 0, position, pagesplit) 
-  while (heightLeft >= 0) {
-    position = heightLeft - imgHeight;
-    pdf.addPage();
-    pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+  var data = await document.getElementById('form_sample');  
+  var data_pdf_head = await document.getElementById('pdf_head');  
+  var data_pdf_bar = await document.getElementById('pdf_bar');  
+  var data_pdf_line = await document.getElementById('pdf_line');  
+  var data_pdf_table = await document.getElementById('pdf_table'); 
+  // this.pdfImages = await document.getElementById('pdf_bar');   
+  await haha(data).then(canvas => {   //await haha(data).then(canvas => {
+    // Few necessary setting options  
+    var imgWidth = 210;     
+    var pageHeight = 295;    
+    var imgHeight = canvas.height * imgWidth / canvas.width;  
+    var heightLeft = imgHeight;  
+    var pagesplit: true;
     heightLeft -= pageHeight;
-  }
-   pdf.save(this.selectedFirmName +"-"+this.selectedReportType+'.pdf'); // Generated PDF 
-});
-console.log("Complete")
+    
+    const contentDataURL = canvas.toDataURL('image/png')  
+    let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF  pt
+    var position = 0;  
+    pdf.addImage(contentDataURL, 'png', 0, position, imgWidth, imgHeight, pagesplit)  
+    // pdf.addImage(contentDataURL, 'png', 0, position, pagesplit) 
+    while (heightLeft >= 0) {
+      position = heightLeft - imgHeight;
+      pdf.addPage();
+      pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+    }
+     pdf.save(this.selectedFirmName +"-"+this.selectedReportType+'.pdf'); // Generated PDF 
+  });
+  console.log("Complete")
+
+this.gate=await 0;
 }
 
 //pdf trial here  // angular incremental ids
@@ -700,71 +704,12 @@ generateCanvas(i, doc, deferred){
 async compilePdfData(data){
   
 }
-exportWithGraph(i){
-  console.log("yogo")
-  if (this.pdfExportDisplayTrigger == true){
-    this.pdfExportDisplayTrigger = false
-  } else {
-    this.pdfExportDisplayTrigger = true
-    this.lineChartTriggerTrial = false
-    this.lineChartTriggerRate = false
-  }
-  i = i
-  console.log(this.pdfExportDisplayTrigger)
-  console.log("lineChartTriggerTrial - " + this.lineChartTriggerTrial)
-  console.log("lineChartTriggerRate - " + this.lineChartTriggerRate)
-  console.log("pdfExportDisplayTrigger - " + this.pdfExportDisplayTrigger)
-  console.log("pdfRateExportDisplayTrigger - " + this.pdfRateExportDisplayTrigger)
-}
-exportWithGraphAsRate(i){
-  // this.updateGraphRate()
-  console.log("yogo")
-  if (this.pdfRateExportDisplayTrigger == true){
-    this.pdfRateExportDisplayTrigger = false
-  } else {
-    this.pdfRateExportDisplayTrigger = true
-    this.lineChartTriggerTrial = false
-    this.lineChartTriggerRate =false
-  }
-  i = i
-  console.log(this.pdfRateExportDisplayTrigger)
-  console.log("lineChartTriggerTrial - " + this.lineChartTriggerTrial)
-  console.log("lineChartTriggerRate - " + this.lineChartTriggerRate)
-  console.log("pdfExportDisplayTrigger - " + this.pdfExportDisplayTrigger)
-  console.log("pdfRateExportDisplayTrigger - " + this.pdfRateExportDisplayTrigger)
-}
-async remchartdata(){
-  // var ctx = document.getElementById("reportCanvas")
-  // // var charta = charta(ctx, {data:"1",label:"1"})
-  // this.lineChartData.push(ctx, {data:1,label:"1"})
-  // console.log(ctx)
-  // var beforechart=await this.lineChartData.pop();
-  // console.log(beforechart)
-  // this.lineChartData=await [];
-  // this.lineChartData.push( beforechart)
-  // this.lineChartData.forEach(element => {
-  //   this.lineChartData.slice();
-  // });
-  
-  this.lineChartTrigger = "no"
-  console.log(this.lineChartTrigger)
-  // this.lineChartData.pop();
-  // console.log(this.lineChartData)
-  // this.lineChartData.slice();
-  // console.log(this.lineChartData)
-  // this.lineChartData.push({data:[9,5,3,2,7],label:'joe'})
-  // console.log(this.lineChartData)
-  // this.lineChartTrigger = "yes"
-  // console.log(this.lineChartTrigger)
-  // var charta = new chart(this.lineChartData)
-}
-  // {data: [], label: ''}
-  
-  
-   //{data: this.surveyData, label: this.surveyData},
-   // {data: [30, 48], label: '2018'}
- 
-
+// exportWithGraph(){
+//   this.showAllBarChart = !this.showAllBarChart;
+// }
+// exportWithGraphAsRate(){
+//   this.showAllRateChart = !this.showAllRateChart;
+// }
 
 public randomize():void {
   let _lineChartData:Array<any> = new Array(this.lineChartData.length);

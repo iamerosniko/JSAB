@@ -8,6 +8,9 @@ import { ReportService } from '../../services/report.services'
 import { ReportsComponent } from './reports.component';
 import { ReportTableComponent } from './report-table/report-table.component';
 import { ReportDashboardComponent } from './report-dashboard/report-dashboard.component';
+import { ReportLinegraphComponent } from './report-linegraph/report-linegraph.component';
+import { ReportRategraphComponent } from './report-rategraph/report-rategraph.component';
+import { ReportTabledataComponent } from './report-tabledata/report-tabledata.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +19,6 @@ import { ReportDashboardComponent } from './report-dashboard/report-dashboard.co
     RouterModule
   ],
   providers:[ReportService],
-  declarations: [ReportsComponent, ReportTableComponent, ReportDashboardComponent]
+  declarations: [ReportsComponent, ReportTableComponent, ReportDashboardComponent, ReportLinegraphComponent, ReportRategraphComponent, ReportTabledataComponent]
 })
 export class ReportsModule { }

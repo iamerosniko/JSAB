@@ -4,6 +4,8 @@ export interface AppSignIn {
 }
 export interface UserAppRole{
     UserID?:number,
+    AuthenticationToken?:string,
+    AuthorizationToken?:string,
     UserName?:string,
     FirstName?:string,
     LastName?:string,

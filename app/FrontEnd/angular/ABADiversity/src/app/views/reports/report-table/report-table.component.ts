@@ -17,8 +17,8 @@ export class ReportTableComponent implements OnInit,OnChanges {
   @Input() lineChartLegend:boolean;
   @Input() lineChartType:string;
   @Input() lineChartTypeRate:string;
-  @Input() lineChartTriggerTrial:boolean=false;
-  @Input() lineChartTriggerRate:boolean=false;
+  @Input() lineChartTriggerTrial:boolean;
+  @Input() lineChartTriggerRate:boolean;
   @Input() pdfExportDisplayTrigger:boolean;
   @Input() pdfRateExportDisplayTrigger:boolean;
   @Input() selectedSurveyYearGraph:RaceVSRoles;
@@ -46,6 +46,7 @@ export class ReportTableComponent implements OnInit,OnChanges {
   }
 
   async ngOnInit() {
+    await this.updateGraph(this.i);
     console.log("REPORT TABLE -------->")
     console.log(this.selectedSurveyYear); 
     // console.log(this.reportTypeRaceVsRole);
@@ -67,7 +68,6 @@ export class ReportTableComponent implements OnInit,OnChanges {
   }
 
   async updateGraph(i:number){
-  this.index = await i;
   console.log(this.index)
   console.log("Get Years START --------------->")
   console.log(this.years)
@@ -97,14 +97,12 @@ export class ReportTableComponent implements OnInit,OnChanges {
 
     console.log("DISPLAY START -------------->")
     var graph=[];
-    var iterate=i;
     //  var selectedRace = this.selectedSurveyYearGraph[iterate].race
     console.log("GRAPH ############################")
     //  console.log(selectedRace)
-    console.log(i)
-    this.selectedSurveyYearGraph[i].myRoleValues.forEach(oneRolesValues => {
+    this.selectedSurveyYear.myRoleValues.forEach(oneRolesValues => {
      
-      if(oneRolesValues.year!='Rate'){
+      if(oneRolesValues.year==this.baseSurveyYear.toString() || oneRolesValues.year==this.topSurveyYear.toString()){
         var datasample: Array<number>=[];
 
         datasample.push(+oneRolesValues.equityPartners);
@@ -121,6 +119,13 @@ export class ReportTableComponent implements OnInit,OnChanges {
         graph=graph.concat(sample);
         console.log("GRAPH")
         console.log(graph)
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++Converted to String+++++++++++++++")
+        console.log("+++++++++++++"+ oneRolesValues.year+"+++++++++++++++")
+        console.log("+++++++++++++"+this.baseSurveyYear.toString()+"++++++++++++++++")
+        console.log("+++++++++++++"+this.topSurveyYear.toString()+"++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
       }
     });
     //  var a = this.selectedSurveyYear.pop();
@@ -150,7 +155,7 @@ export class ReportTableComponent implements OnInit,OnChanges {
     // console.log("RACE!!!")
     // console.log(selectedRace)
     // this.selectedSurveyYearGraph.myRoleValues.forEach(i=>i.year)
-    this.selectedSurveyYearGraph[i].myRoleValues.forEach(oneRolesValues => {
+    this.selectedSurveyYear.myRoleValues.forEach(oneRolesValues => {
       if (oneRolesValues.year=='Rate'){
         var datasamplerate: Array<number>=[];
         datasamplerate.push(+oneRolesValues.equityPartners.split("%")[0]);
@@ -168,6 +173,13 @@ export class ReportTableComponent implements OnInit,OnChanges {
         graphRate=graphRate.concat(samplerate);
         console.log("GRAPH")
         console.log(graphRate)
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++Converted to String+++++++++++++++")
+        console.log("+++++++++++++"+ oneRolesValues.year+"+++++++++++++++")
+        console.log("+++++++++++++"+this.baseSurveyYear.toString()+"++++++++++++++++")
+        console.log("+++++++++++++"+this.topSurveyYear.toString()+"++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
       }
     });
 
@@ -215,6 +227,13 @@ export class ReportTableComponent implements OnInit,OnChanges {
         graphRate=graphRate.concat(samplerate);
         console.log("GRAPH")
         console.log(graphRate)
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
+        console.log("+++++++++++++Converted to String+++++++++++++++")
+        console.log("+++++++++++++"+ oneRolesValues.year+"+++++++++++++++")
+        console.log("+++++++++++++"+this.baseSurveyYear.toString()+"++++++++++++++++")
+        console.log("+++++++++++++"+this.topSurveyYear.toString()+"++++++++++++++++")
+        console.log("+++++++++++++++++++++++++++++++++++++++++++++++")
       }
     });
     

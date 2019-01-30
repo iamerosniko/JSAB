@@ -12225,11 +12225,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\alverer\\Desktop\\Apps\\aba\\JSAB\\app\\Client\\Client.csproj",
+      "projectUniqueName": "C:\\Users\\alverer\\Desktop\\Apps\\ABA\\JSAB\\app\\FrontEnd\\Client\\Client.csproj",
       "projectName": "Client",
-      "projectPath": "C:\\Users\\alverer\\Desktop\\Apps\\aba\\JSAB\\app\\Client\\Client.csproj",
+      "projectPath": "C:\\Users\\alverer\\Desktop\\Apps\\ABA\\JSAB\\app\\FrontEnd\\Client\\Client.csproj",
       "packagesPath": "C:\\Users\\alverer\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\alverer\\Desktop\\Apps\\aba\\JSAB\\app\\Client\\obj\\",
+      "outputPath": "C:\\Users\\alverer\\Desktop\\Apps\\ABA\\JSAB\\app\\FrontEnd\\Client\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

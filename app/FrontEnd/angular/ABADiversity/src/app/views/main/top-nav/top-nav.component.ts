@@ -15,24 +15,15 @@ export class TopNavComponent implements OnInit {
 
   async ngOnInit(){
     try{
-      var BTAMURL = <BtamEntity>await this.loginSvc.getBtamURL();
-      sessionStorage.setItem("BTAMURL",BTAMURL.BTAMURL);
-      var user = <UserAppRole>await this.loginSvc.getUserName();
-      // var user = <UserAppRole> {UserName:"alverer@mfcgd.com"};
-      // console.log(user)
-      // var host = "abadiversityclientlocal.azurewebsites.net"
-      var host = window.location.host;
-      var appSignIn = <AppSignIn> { AppURL:host,UserName:user.UserName};
-      this.currentUser = await this.loginSvc.getAppSignIn(appSignIn);
-      // console.log(this.currentUser)
-      // console.log(host)
-      // console.log(this.currentUser.Role!='')
+     
+      this.currentUser = await this.loginSvc.getAppSignIn();
+      console.log(this.currentUser)
       if(this.currentUser!=null){
-        var authenticationToken = <AppToken> await this.loginSvc.GetAuthenticationToken(this.currentUser);
-        var authorizationToken = <AppToken> await this.loginSvc.GetAuthorizationToken(authenticationToken);
-        sessionStorage.setItem("ATT",authenticationToken.Token);
-        sessionStorage.setItem("ATR",authorizationToken.Token);
-        this.router.navigate(['./Survey']) 
+        var authenticationToken =this.currentUser.AuthenticationToken;
+        var authorizationToken = this.currentUser.AuthorizationToken;
+        sessionStorage.setItem("ATT",authenticationToken);
+        sessionStorage.setItem("ATR",authorizationToken);
+        this.router.navigate(['./Reports']) 
       }
       else{
         //redirect
